@@ -8,22 +8,6 @@ inventar = db["inventar"]
 def handle(inp):
     if inp == "q":
         return False
-    elif inp == "add_artikel":
-        name = raw_input("Name: ")
-        pos = raw_input("POS: ")
-        ok = raw_input("insert? ")
-        if ok == "" or ok == "y" or ok == "yes":
-            produkte.insert({"name":name, "pos":pos})
-    elif inp == "list_artikel":
-        print "+----------+------------------------------+"
-        for p in produkte.find():
-            print "|%(pos)-10s|%(name)-30s|" % p
-        print "+----------+------------------------------+"
-    elif inp == "del_artikel":
-        pos = raw_input("POS: ")
-        ok = raw_input("del? ")
-        if ok == "" or ok == "y" or ok == "yes":
-            produkte.remove({"pos":pos})
     elif inp == "add_produkt":
         name = raw_input("Name: ")
         pos = raw_input("POS: ")
@@ -51,15 +35,25 @@ def handle(inp):
         ok = raw_input("insert? ")
         if ok == "" or ok == "y" or ok == "yes":
             inventar.insert({"produkt":p["_id"], "anzahl":count, "ort":location})
+    elif inp == "list_inventar":
+        print "+----------+------------------------------+-----+--------------------+"
+        for i in inventar.find():
+            p = produkte.find_one({"_id": i["produkt"]})
+            i["name"] = p["name"]
+            i["pos"] = p["pos"]
+            print "|%(pos)-10s|%(name)-30s|%(anzahl)-5s|%(ort)-20s|" % i
+        print "+----------+------------------------------+-----+--------------------+"
     return True
+
+exit = False
 
 import sys
 try:
     handle(sys.argv[1])
+    exit = True
 except:
     pass
 
-exit = False
 while not exit:
     i = raw_input("> ")
     exit = not handle(i)
