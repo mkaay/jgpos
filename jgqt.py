@@ -26,8 +26,17 @@ class Main():
         splash.show()
         sleep(0.1)
         splash.showMessage("mit Datenbank verbinden...")
+        self.app.processEvents()
         sleep(0.2)
-        connection = Connection("192.168.0.20", 27017)
+        try:
+            connection = Connection("192.168.0.20", 27017)
+        except:
+            splash.showMessage("Verbindung fehlgeschlagen!")
+            self.app.processEvents()
+            box = QMessageBox()
+            box.setText("Verbindung fehlgeschlagen!")
+            box.exec_()
+            sys.exit()
 
         db = connection["jgpos"]
         inventar = db["inventar"]
