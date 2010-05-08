@@ -165,6 +165,7 @@ class InventarAendern(QWidget):
 
     def neu(self):
         self.setWindowTitle(u"Bestand Hinzufügen")
+        self.iid = None
         self.anzahl.setValue(1)
         #self.ort.setText("")
         self.auswahl.refresh()
@@ -245,6 +246,7 @@ class ProdukteAendern(QWidget):
 
     def neu(self):
         self.setWindowTitle(u"Produkt Hinzufügen")
+        self.iid = None
         self.pos.setText("")
         self.name.setText("")
         self.connect(self.speichern, SIGNAL("clicked()"), self.append)
